@@ -8,6 +8,8 @@ It has by default a simple LSTM. Other networks can be easily integrated by your
 
 The methodology merges all series in one with multiple features.
 
+At the class data.py, by default it takes the montly mean the series. It obviously can be changed
+
 # Run
 python main.py
 ## Optional new arguments
