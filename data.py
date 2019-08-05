@@ -31,7 +31,7 @@ class Data:
             Logger.log('-------WARNING------')
             Logger.log('This SW was tested with pandas 0.24.2')
             self.series = Series.read_csv(os.path.join(self.folder, self.name), header=0)
-            
+
         self.series = self.series.resample('M').mean()
         self.series = self.series.astype('float32')
         
@@ -45,6 +45,9 @@ class Data:
 
     def get_values(self):
         return self.X
+    
+    def get_dates(self):
+        return self.dates
     
     def get_series(self):
         return self.series

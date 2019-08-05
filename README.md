@@ -2,7 +2,7 @@
 
 ## Under development, but works
 
-It implements the expanding windowing. All windows are normalized at every run.
+It implements the expanding and sliding windowing. All windows are re-normalized at every run.
 
 It has by default a simple LSTM. Other networks can be easily integrated by your will.
 
@@ -14,6 +14,9 @@ At the class data.py, by default it takes the montly mean of each time series. I
 python main.py
 ## Optional new arguments
 -f: How many units of time to forecast (default: 1)
+-t: The rate of the train size, integer (default: 30)
+-w: windowing size (default: 12)
+TODO: -v: validation size (default: 30)
 
 # Add model
 It has a simple LSTM by default.
@@ -35,5 +38,4 @@ The name of the csv file is by default taken as the name of the series
 Tested on Pandas 0.24.2. It seems that Pandas 0.25 has a problem with Series.from_csv
 
 # TODO:
-Add slinding windowing
-
+Add validation mechanisms at fitting

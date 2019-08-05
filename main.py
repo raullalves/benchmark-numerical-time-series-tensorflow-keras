@@ -10,10 +10,10 @@ from result import Result
 
 from logger import Logger
 
-def create_models(input_shape):
+def create_models(features, window_size, validation_rate):
     models = []
-    for i in range(input_shape[1]):
-        model = Lstm(input_shape, i)
+    for i in range(features.get_qtd_of_features()):
+        model = Lstm(features.get_qtd_of_features(), i, validation_rate, window_size=window_size)
         model.create_model()
         models.append(model)
 
@@ -34,8 +34,8 @@ def load_csv(folder):
 
     return data_csv
 
-def create_array_of_features_and_labels(train_size, list_of_features, forecast):
-    features = Feature(train_size, list_of_features, forecast)
+def create_array_of_features_and_labels(train_size, list_of_features, forecast, window_size):
+    features = Feature(train_size, list_of_features, forecast, window_size)
     features.crete_feature_array()
 
     return features
@@ -55,6 +55,7 @@ def loop(features, models, results):
 
     while not features.has_ended():
         X = features.get_train_set()
+        Logger.log('Training until date '+str(features.get_last_date()))
         for result in results:
             y = features.get_label_set(result.get_feature_position())
             models[result.get_feature_position()].fit(X,y)
@@ -68,17 +69,12 @@ def loop(features, models, results):
         features.move_window()
 
 def main(args):
-    if not args.windowing_tipe == 'expanding':
-        Logger.log('Only expanding window is currently implemented')
-        os._exit(1)
-
     list_of_features = load_csv(args.d)
 
-    models = create_models((1, len(list_of_features)))
-
-    features = create_array_of_features_and_labels(args.train_size, list_of_features, args.forecast)
-
+    features = create_array_of_features_and_labels(args.train_size, list_of_features, args.forecast, args.window_size)
+    models = create_models(features, args.window_size, args.validation_rate)
     results = create_results_instances(list_of_features)
+
     loop(features, models, results)
 
 if __name__=='__main__':
@@ -86,6 +82,7 @@ if __name__=='__main__':
     parser.add_argument('-d', action="store", default='Data', dest='d')
     parser.add_argument('-f', action="store",type=int, default=1, dest='forecast')
     parser.add_argument('-t', action="store",type=int, default=30, dest='train_size')
-    parser.add_argument('-w', action="store", default='expanding', dest='windowing_tipe')
+    parser.add_argument('-w', action="store", type=int, default=12, dest='window_size')
+    parser.add_argument('-v', action="store", type=int, default=30, dest='validation_rate')
     args = parser.parse_args(sys.argv[1:])
     main(args)
