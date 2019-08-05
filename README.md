@@ -2,7 +2,7 @@
 
 ## Under development, but works
 
-It implements the expanding and sliding windowing. All windows are re-normalized at every run.
+It implements the sliding windowing. All windows are re-normalized at every run.
 
 It has by default a simple LSTM. Other networks can be easily integrated by your will.
 
