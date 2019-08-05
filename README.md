@@ -14,8 +14,11 @@ At the class data.py, by default it takes the montly mean of each time series. I
 python main.py
 ## Optional new arguments
 -f: How many units of time to forecast (default: 1)
+
 -t: The rate of the train size, integer (default: 30)
+
 -w: windowing size (default: 12)
+
 TODO: -v: validation size (default: 30)
 
 # Add model
