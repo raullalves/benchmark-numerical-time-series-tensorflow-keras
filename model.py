@@ -20,7 +20,6 @@ class Model:
         self.validation_rate = validation_rate/100
         self.verbose = verbose
         self.temp_filename = self.file_log+'_'+str(index)+'.hdf5'
-        self.fff = 'temp.hdf5'
         Logger.log('Model instance created', verbose=0)
 
     def create_model(self):
@@ -53,6 +52,5 @@ class Model:
         
         #reset weights
         self.model.reset_states()
-        self.model.load_weights(self.fff)
-        
+
         return pred

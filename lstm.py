@@ -9,11 +9,11 @@ from model import Model
 from logger import Logger
 
 class Lstm(Model):
-    def __init__(self, qtd_of_features, index, validation_rate, window_size = 5, epochs = 500, batch_size = 64, verbose = 0):
+    def __init__(self, qtd_of_features, index, validation_rate, window_size = 5, epochs = 500, batch_size = 64, verbose = 1):
         super(Lstm, self).__init__((window_size, qtd_of_features),index, validation_rate, epochs, batch_size, verbose)
         self.file_log = 'lstm'
         self.temp_filename = self.file_log+'_'+str(index)+'.hdf5'
-        self.neurons = 128
+        self.neurons = 256
         self.dropout = 0.5
         self.window_size = window_size
         
@@ -25,11 +25,11 @@ class Lstm(Model):
         Logger.log_to_file('Model shape is '+str(self.input_shape), self.file_log)
 
         self.model = Sequential()
-        self.model.add(LSTM(self.neurons, input_shape=self.input_shape))
+        self.model.add(LSTM(self.neurons, input_shape=self.input_shape, return_sequences=True))
+        self.model.add(LSTM(self.neurons))
         self.model.add(Dropout(self.dropout))
 
         self.model.add(Dense(1))
         self.model.compile(loss='mae', optimizer='adam')
-        self.model.save_weights(self.fff)
-        
+
         Logger.log_to_file('LSTM model created', self.file_log)
