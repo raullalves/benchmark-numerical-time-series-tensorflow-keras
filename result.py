@@ -19,12 +19,12 @@ class Result:
         if os.path.isfile(os.path.join('logs',self.name+'_predicted.txt')):
             os.remove(os.path.join('logs',self.name+'_predicted.txt'))
 
-        Logger.log_to_file('DATE,'+self.name+' real', self.name+'_real', verbose=0, show_date=0)
-        Logger.log_to_file('DATE,'+self.name+' _predicted', self.name+'_predicted', verbose=0, show_date=0)
+        Logger.log_to_file('DATE,real', self.name+'_real', verbose=0, show_date=0)
+        Logger.log_to_file('DATE,predicted', self.name+'_predicted', verbose=0, show_date=0)
 
         Logger.log('Created result instance for feature '+self.name)
     
-    def calculate_loss_and_show_partial_results(self, x, x_pred):
+    def calculate_loss_and_show_partial_results(self, x, x_pred, date):
         self.qtd = self.qtd + 1
 
         #rmse only on specific element
@@ -34,11 +34,12 @@ class Result:
         self.real_storing.append(x)
         self.predicted_storing.append(x_pred)
 
-        Logger.log_to_file(x, self.name+'_real', verbose=0, show_date=0)
-        Logger.log_to_file(x_pred, self.name+'_predicted', verbose=0, show_date=0)
+        Logger.log_to_file(str(date)+','+str(x), self.name+'_real', verbose=1, show_date=0)
+        Logger.log_to_file(str(date)+','+str(x_pred), self.name+'_predicted', verbose=1, show_date=0)
         
         rmse = math.sqrt(mean_squared_error([x],[x_pred]))
         self.rmses.append(rmse)
+        Logger.log('date = '+str(date))
         Logger.log('For feature '+self.name+' predicted '+str(x_pred)+ ' where actual value is '+str(x))
         Logger.log('Partial rmse for feature '+self.name+' = '+str((np.asarray(self.rmses).sum())/self.qtd))
 
