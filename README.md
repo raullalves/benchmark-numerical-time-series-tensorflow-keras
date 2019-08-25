@@ -4,13 +4,13 @@
 
 It implements the sliding windowing. All windows are re-normalized at every run.
 
-It has by default a simple LSTM. Other networks can be easily integrated by your will.
+It has by default a stateful LSTM trained in batches. The default batch size is 10.
+
+It takes a window for training and the next window for validation. It has stride = 1 by default. The default window size is 12
 
 The methodology merges all series in one with multiple features.
 
 At the class data.py, by default it takes the montly mean of each time series. It obviously can be changed
-
-It uses TimeseriesGenerator and pandas series for preprocessing
 
 # Run
 python main.py
@@ -23,9 +23,7 @@ python main.py
 
 -w: The window size (Default 12 months)
 
--v: The validation percentage (Default 0.3)
-
--b: The batch size (Default 3)
+-b: The batch size (Default 10)
 
 # Add model
 It has a simple LSTM by default.
